@@ -20,10 +20,6 @@ Alias for set
 
 Deletes a key
 
-### prefix
-
-Creates a prefixed version of the cache on which get/set/put/del can be used
-
 ### clear
 
 Delete all data and expiration timers. This will delete all prefixed data as well.
@@ -33,8 +29,19 @@ Delete all data and expiration timers. This will delete all prefixed data as wel
 ```javascript
 var thecache = require('thecache');
 
-var cache1 = thecache(); // Each call creates it's own self-contained cache
-var cache2 = thecache();
+var conf = thecache(); // Each call creates it's own self-contained cache
+var tests = thecache();
 
-var conf = cache1.prefix('config'); // Prefixed areas in the same cache
+conf.set('key1', 'somedata');
+
+conf.set('key2', [2, 5]); // The value can be any JS variable
+
+conf.set('expirekey', {something: true}, 2); // Expires after 2 seconds
+
+var val2 = conf.get('key2'); // Contents can be gotten with a sync call...
+
+conf.get('key2', function(val) { // ...or asynchronously, using a callback
+	console.log(val);
+});
+
 ```

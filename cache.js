@@ -2,24 +2,21 @@ module.exports = function() {
 	var cache = {};
 	var expires = {};
 	
-	function get(prefix, key, cb) {
-		key = prefix + key;
+	function get(key, cb) {
 		var v = cache[key];
 		cb && cb(v);
 		return v;
 	}
 	
-	function set(prefix, key, val, expire) {
-		key = prefix + key;
+	function set(key, val, expire) {
 		cache[key] = val;
 		if(expire != null) {
 			clearTimeout(expires[key]);
-			expires[key] = setTimeout(del, expire * 1000, '', key);
+			expires[key] = setTimeout(del, expire * 1000, key);
 		}
 	}
 	
-	function del(prefix, key) {
-		key = prefix + key;
+	function del(key) {
 		delete cache[key];
 		if(key in expires) {
 			clearTimeout(expires[key]);
@@ -35,19 +32,11 @@ module.exports = function() {
 		expires = {};
 	}
 	
-	function prefix(pre) {
-		if(pre.length > 0) pre += ':';
-		var boundSet = set.bind(null, pre);
-		return {
-			get: get.bind(null, pre),
-			set: boundSet,
-			put: boundSet, // Alias for dev/libs that prefer different names
-			del: del.bind(null, pre)
-		};
-	}
-	
-	var c = prefix('');
-	c.prefix = prefix; // Don't want prefixes to have access to these
-	c.clear = clear;
-	return c;
+	return {
+		get: get,
+		set: set,
+		put: set,
+		del: del,
+		clear: clear
+	};
 }
