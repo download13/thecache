@@ -20,7 +20,7 @@ Alias for set
 
 Deletes a key
 
-### clear
+### clear()
 
 Delete all data and expiration timers
 

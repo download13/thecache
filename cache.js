@@ -1,42 +1,38 @@
-module.exports = function() {
-	var cache = {};
-	var expires = {};
-	
-	function get(key, cb) {
-		var v = cache[key];
+function Cache() {
+	this.cache = {};
+	this.expires = {};
+}
+Cache.prototype = {
+	get: function(key, cb) {
+		var v = this.cache[key];
 		cb && cb(v);
 		return v;
-	}
-	
-	function set(key, val, expire) {
-		cache[key] = val;
+	},
+	set: function(key, val, expire) {
+		this.cache[key] = val;
 		if(expire != null) {
-			clearTimeout(expires[key]);
-			expires[key] = setTimeout(del, expire * 1000, key);
+			clearTimeout(this.expires[key]);
+			this.expires[key] = setTimeout(this.del.bind(this, key), expire * 1000);
 		}
-	}
-	
-	function del(key) {
-		delete cache[key];
-		if(key in expires) {
-			clearTimeout(expires[key]);
-			delete expires[key];
+	},
+	del: function(key) {
+		delete this.cache[key];
+		var ex = this.expires;
+		if(key in ex) {
+			clearTimeout(ex[key]);
+			delete ex[key];
 		}
-	}
-	
-	function clear() {
-		cache = {};
-		for(var i in expires) {
-			clearTimeout(expires[i]);
+	},
+	clear: function() {
+		this.cache = {};
+		for(var i in this.expires) {
+			clearTimeout(this.expires[i]);
 		}
-		expires = {};
+		this.expires = {};
 	}
-	
-	return {
-		get: get,
-		set: set,
-		put: set,
-		del: del,
-		clear: clear
-	};
+};
+Cache.prototype.put = Cache.prototype.set; // Alias
+
+module.exports = function() {
+	return new Cache();
 }
