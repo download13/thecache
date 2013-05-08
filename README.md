@@ -1,6 +1,6 @@
 #thecache
 
-*Install* `npm install thecache`
+**Install:** `npm install thecache`
 
 ## API
 
@@ -22,7 +22,7 @@ Deletes a key
 
 ### clear
 
-Delete all data and expiration timers. This will delete all prefixed data as well.
+Delete all data and expiration timers
 
 ## Usage
 
@@ -43,5 +43,4 @@ var val2 = conf.get('key2'); // Contents can be gotten with a sync call...
 conf.get('key2', function(val) { // ...or asynchronously, using a callback
 	console.log(val);
 });
-
 ```
