@@ -1,0 +1,14 @@
+{
+  "name": "thecache",
+  "version": "0.0.1",
+  "description": "A simple but powerfull in-memory cache for Node.js",
+  "main": "cache.js",
+  "scripts": {
+    "test": "moka"
+  },
+  "devDependencies": {
+	"moka": "0.2.0"
+  },
+  "repository": "",
+  "author": ""
+}
