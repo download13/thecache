@@ -1,3 +1,5 @@
+# Deprecated
+
 #thecache
 
 **Install:** `npm install thecache`
